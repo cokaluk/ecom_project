@@ -59,5 +59,7 @@ group :test do
   gem "selenium-webdriver"
 end
 
-
 gem 'faker'
+
+gem 'bootstrap', '~> 5.3.3'
+gem 'sassc-rails'

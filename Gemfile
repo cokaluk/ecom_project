@@ -63,3 +63,5 @@ gem 'faker'
 
 gem 'bootstrap', '~> 5.3.3'
 gem 'sassc-rails'
+
+gem 'kaminari'

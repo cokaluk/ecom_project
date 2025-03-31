@@ -11,6 +11,8 @@
 
 Product.destroy_all
 Category.destroy_all
+Province.destroy_all
+AdminUser.destroy_all
 
 4.times do
   category = Category.create(name: Faker::Commerce.department)
@@ -23,4 +25,21 @@ Category.destroy_all
       category: category
     )
   end
-endAdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
+end
+
+Province.create([ {name: "Alberta"},
+                  {name: "British Columbia"},
+                  {name: "Manitoba"},
+                  {name: "New Brunswick"},
+                  {name: "Newfoundland and Labrador"},
+                  {name: "Nova Scotia"},
+                  {name: "Ontario"},
+                  {name: "Prince Edward Island"},
+                  {name: "Quebec"},
+                  {name: "Saskatchewan"},
+                  {name: "Yukon"},
+                  {name: "Nunavut"},
+                  {name: "Northwest Territories"}
+                ])
+
+AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?

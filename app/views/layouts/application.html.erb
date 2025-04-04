@@ -33,6 +33,14 @@
                 <%= link_to category.name, category_path(category), class: "nav-link" %>
               </div>
             <% end %>
+            <% if user_signed_in? %>
+              <div><%= link_to current_user.name, edit_user_registration_path %></div>
+              <%# has to be button_to link_to ends up as a get request %>
+              <div><%= button_to "Logout", destroy_user_session_path, method: :delete %></div>
+            <% else %>
+              <div><%= link_to "Sign Up", new_user_registration_path %></div>
+              <div><%= link_to "Login", new_user_session_path %></div>
+            <% end %>
           <%# </ul> %>
         </div>
 

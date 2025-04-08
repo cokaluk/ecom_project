@@ -3,7 +3,7 @@
   <% @products.each do | product | %>
     <div>
       <p><%= product.name %></p>
-      <%= link_to "Remove from Cart", remove_item_cart_path(product.id), method: :delete %>
+      <%= button_to "Remove from Cart", remove_item_cart_path(product.id), method: :delete %>
     </div>
   <% end %>
 <% else %>

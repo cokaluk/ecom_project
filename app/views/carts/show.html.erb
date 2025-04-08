@@ -1,0 +1,11 @@
+<h1>Cart#show</h1>
+<% if @products.any? %>
+  <% @products.each do | product | %>
+    <div>
+      <p><%= product.name %></p>
+      <%= link_to "Remove from Cart", remove_item_cart_path(product.id), method: :delete %>
+    </div>
+  <% end %>
+<% else %>
+  <p>Your cart is empty</p>
+<% end %>

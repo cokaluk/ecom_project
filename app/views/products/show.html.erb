@@ -4,4 +4,8 @@
 <p>In Stock: <%= @product.stock %></p>
 <p>Description: <%= @product.description %></p>
 <p>Category: <%= link_to @product.category.name, category_path(@product.category) %></p>
-<%= button_to "Add to Cart", add_item_cart_path(@product.id), method: :post %>
+<%= form_with url: add_item_cart_path(product_id: @product.id), method: :post, local: true do |f| %>
+  <%= f.label :quantity, "Quantity" %>
+  <%= f.number_field :quantity, value: 1, min: 1, step: 1 %>
+  <%= f.submit "Add to Cart" %>
+<% end %>

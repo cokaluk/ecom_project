@@ -1,9 +1,14 @@
 <h1>Cart#show</h1>
-<% if @products.any? %>
-  <% @products.each do | product | %>
+<% if session[:cart].any? %>
+  <% session[:cart].each do | product | %>
     <div>
-      <p><%= product.name %></p>
-      <%= button_to "Remove from Cart", remove_item_cart_path(product.id), method: :delete %>
+      <p>
+        <%= product[:name] %> <%= number_to_currency(product[:price])%>
+        <%= product[:quantity] %>
+        <%= debug product %>
+      </p>
+      <%# removed  remove from cart button for now is causing errors cuz product_id is not being assigned %>
+      <%= button_to "Remove from Cart", remove_item_cart_path(product_id: product["id"]), method: :delete %>
     </div>
   <% end %>
 <% else %>

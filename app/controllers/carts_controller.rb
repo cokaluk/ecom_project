@@ -32,6 +32,19 @@ class CartsController < ApplicationController
     redirect_to cart_path
   end
 
+  def update_item
+    product_id = params[:product_id].to_i
+    quantity = params[:quantity].to_i
+
+    product = session[:cart].find { |item| item["id"] == product_id }
+
+    if product
+      product["quantity"] = quantity
+    end
+
+    redirect_to cart_path
+  end
+
   private
 
   def initialize_cart

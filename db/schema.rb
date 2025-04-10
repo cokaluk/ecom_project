@@ -64,13 +64,13 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_09_215629) do
   end
 
   create_table "orders", force: :cascade do |t|
-    t.integer "customer_id", null: false
+    t.integer "user_id", null: false
     t.integer "sub_total"
     t.integer "grand_total"
     t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["customer_id"], name: "index_orders_on_customer_id"
+    t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -120,7 +120,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_09_215629) do
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
   add_foreign_key "order_taxes", "orders"
-  add_foreign_key "orders", "customers"
+  add_foreign_key "orders", "users"
   add_foreign_key "products", "categories"
   add_foreign_key "taxes", "provinces"
 end

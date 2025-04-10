@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "orders/show"
   devise_for :users
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
@@ -22,5 +23,8 @@ Rails.application.routes.draw do
     post 'add_item/:product_id', to: 'carts#add_item', as: :add_item
     delete 'remove_item/:product_id', to: 'carts#remove_item', as: :remove_item
     patch 'update_item/:product_id', to: 'carts#update_item', as: :update_item
+    post 'checkout', to: 'carts#checkout', as: :checkout
    end
+
+   resources :orders, only: [:show]
 end

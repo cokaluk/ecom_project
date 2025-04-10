@@ -1,13 +1,15 @@
 <h1>Order Confirmation</h1>
 
-<p>Order ID:<%= @order.id %>
-<p>Sub Total:<%= @order.sub_total / 100.0 %></p>
-<p>Tax:TODO</p>
-<p>Grand Total:<%= @order.grand_total / 100.0 %></p>
+<p>Order ID: <%= @order.id %>
+<p>Sub Total: $<%= sprintf('%.2f', @order.sub_total / 100.0) %></p>
+<% @order.order_taxes.each do |tax| %>
+  <p><%= tax.tax_name %>: $<%= sprintf('%.2f', (tax.tax_rate * @order.sub_total).round / 100.0) %></p>
+<% end %>
+<p>Grand Total: $<%= sprintf('%.2f', @order.grand_total / 100.0) %></p>
 
 <h2>Items Ordered</h2>
   <% @order.order_items.each do |item| %>
     <div>
-      <%= item.quantity %> x <%= item.product.name %> @ <%= item.unit_price / 100.0 %>
+      <%= item.quantity %> x <%= item.product.name %> @ $<%= sprintf('%.2f', item.unit_price / 100.0) %>
     </div>
   <% end %>

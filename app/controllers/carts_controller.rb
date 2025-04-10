@@ -96,7 +96,13 @@ class CartsController < ApplicationController
 
   def calculate_grand_total
     sub_total = calculate_sub_total
-    # todo calculate tax
-    sub_total
+    user = current_user
+    user_province = user.province
+    taxes = Tax.where(province_id: user_province.id)
+    grand_total = sub_total
+    taxes.each do |tax|
+      grand_total += (sub_total * tax.tax_rate).round
+    end
+    grand_total
   end
 end

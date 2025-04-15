@@ -48,39 +48,41 @@ class CartsController < ApplicationController
   def checkout
     if user_signed_in?
       user = current_user
-      order = Order.create!(
-        user_id: user.id,
-        status: "new",
-        sub_total: calculate_sub_total,
-        grand_total: calculate_grand_total
-      )
-
-      session[:cart].each do |product|
-        OrderItem.create!(
-          order_id: order.id,
-          product_id: product["id"],
-          quantity: product["quantity"],
-          unit_price: product["price"]
-        )
-      end
-
-      user_province = user.province
-      taxes = Tax.where(province_id: user_province.id)
-      taxes.each do |tax|
-        OrderTax.create!(
-          order_id: order.id,
-          tax_name: tax.tax_type,
-          tax_rate: tax.tax_rate
-        )
-      end
-
-      session[:cart] = []
-
-      redirect_to order_path(order), notice: "your order has been placed successfully!"
-
+    elsif params[:province_id].present?
+      user = User.create!(guest: true, province_id: params[:province_id], email: "guest_#{SecureRandom.uuid}@fake.com")
     else
-      redirect_to new_user_session_path, alert: "You need to sign in to checkout."
+      redirect_to cart_path, notice: "You must select a province" and return
     end
+
+    order = Order.create!(
+      user_id: user.id,
+      status: "new",
+      sub_total: calculate_sub_total,
+      grand_total: calculate_grand_total(user)
+    )
+
+    session[:cart].each do |product|
+      OrderItem.create!(
+        order_id: order.id,
+        product_id: product["id"],
+        quantity: product["quantity"],
+        unit_price: product["price"]
+      )
+    end
+
+    user_province = user.province
+    taxes = Tax.where(province_id: user_province.id)
+    taxes.each do |tax|
+      OrderTax.create!(
+        order_id: order.id,
+        tax_name: tax.tax_type,
+        tax_rate: tax.tax_rate
+      )
+    end
+
+    session[:cart] = []
+
+    redirect_to order_path(order), notice: "your order has been placed successfully!"
   end
 
   private
@@ -94,9 +96,8 @@ class CartsController < ApplicationController
     session[:cart].sum { |product| product["price"] * product["quantity"] }
   end
 
-  def calculate_grand_total
+  def calculate_grand_total(user)
     sub_total = calculate_sub_total
-    user = current_user
     user_province = user.province
     taxes = Tax.where(province_id: user_province.id)
     grand_total = sub_total

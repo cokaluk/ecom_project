@@ -7,8 +7,19 @@ class User < ApplicationRecord
 
   validates :province_id, presence: true
 
-  validates :name, presence: true
-  validates :postal_code, presence: true
-  validates :address, presence: true
-  validates :city, presence: true
+  with_options unless: :guest? do
+    validates :name, presence: true
+    validates :postal_code, presence: true
+    validates :address, presence: true
+    validates :city, presence: true
+  end
+
+  def password_required?
+    !guest? && super
+  end
+
+  def email_required?
+    !guest? && super
+  end
+
 end

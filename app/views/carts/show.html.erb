@@ -13,7 +13,17 @@
       <%= button_to "Remove from Cart", remove_item_cart_path(product_id: product["id"]), method: :delete %>
     </div>
   <% end %>
-  <%= button_to "Checkout", checkout_cart_path, method: :post%>
+
+  <% unless user_signed_in? %>
+  <%= form_with url: checkout_cart_path, method: :post do |f| %>
+    <%= f.label :province_id, "Province" %>
+    <%= f.collection_select :province_id, Province.all, :id, :name %>
+    <%= f.submit "Checkout" %>
+  <% end %>
+<% else %>
+  <%= button_to "Checkout", checkout_cart_path, method: :post %>
+<% end %> 
+
 <% else %>
   <p>Your cart is empty</p>
 <% end %>

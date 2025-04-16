@@ -11,6 +11,10 @@ class ProductsController < ApplicationController
       @products = @products.where(category_id: params[:category_id])
     end
 
+    if params[:new].present?
+      @products = @products.where("created_at >= ?", 3.days.ago)
+    end
+
     if params[:query].present?
       @products = @products.where("name LIKE :q OR description LIKE :q", q: "%#{params[:query]}%")
     end

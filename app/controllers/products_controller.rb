@@ -3,6 +3,10 @@ class ProductsController < ApplicationController
     @categories = Category.all
     @products = Product.all
 
+    if params[:on_sale].present?
+      @products = @products.where(on_sale: true)
+    end
+
     if params[:category_id].present?
       @products = @products.where(category_id: params[:category_id])
     end

@@ -5,6 +5,12 @@
     
         <%= label_tag :category_id, "Category" %>
         <%= select_tag :category_id, options_from_collection_for_select(@categories, :id, :name, params[:category_id]), include_blank: "All Categories" %>
+
+        <%= check_box_tag :on_sale, "1", params[:on_sale].present? %>
+        <%= label_tag :on_sale, "On Sale Only" %>
+
+        <%= check_box_tag :new, "1", params[:new].present? %>
+        <%= label_tag :new, "New Products Only" %>
     
         <%= submit_tag "Search" %>
     </div>

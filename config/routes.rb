@@ -27,4 +27,6 @@ Rails.application.routes.draw do
    end
 
    resources :orders, only: [:show]
+
+   get 'profile', to: 'users#show', as: :profile
 end

@@ -19,7 +19,7 @@ class ProductsController < ApplicationController
       @products = @products.where("name LIKE :q OR description LIKE :q", q: "%#{params[:query]}%")
     end
 
-    @products = @products.page(params[:page]).per(10)
+    @products = @products.page(params[:page]).per(12)
   end
 
   def show

@@ -1,7 +1,0 @@
-<%= render 'shared/product_search_form' %>
-
-<h1>Categories</h1>
-
-<% @categories.each do |category|%>
-  <h2><%= link_to category.name, category_path(category) %></h2>
-<% end %>

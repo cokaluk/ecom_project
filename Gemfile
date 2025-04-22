@@ -71,3 +71,5 @@ gem 'devise'
 
 gem 'rubocop'
 gem 'rubocop-rails'
+
+gem "image_processing", "~> 1.2"

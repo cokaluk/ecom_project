@@ -5,6 +5,11 @@
 <div class="row">
   <% @products.each do |product|%>
     <div class="col-6 col-lg-4 my-4">
+      <% if product.image.attached? %>
+        <div>
+          <%= image_tag url_for(product.image.variant(resize_to_limit: [400, 400])), class: "img-fluid" %>
+        </div>
+      <% end %>
       <h2><%= link_to product.name, product_path(product) %></h2>
       <p>Price: <%= number_to_currency(product.price / 100.0) %></p>
       <p>In Stock: <%= product.stock %></p>

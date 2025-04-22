@@ -68,3 +68,6 @@ gem 'kaminari'
 
 gem 'activeadmin'
 gem 'devise'
+
+gem 'rubocop'
+gem 'rubocop-rails'

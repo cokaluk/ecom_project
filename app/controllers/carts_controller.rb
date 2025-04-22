@@ -20,7 +20,7 @@ class CartsController < ApplicationController
     else
       logger.debug "Product not found in cart, adding new product."
       session[:cart] ||= []
-      session[:cart] << {"id" => product.id, "name" => product.name, "price" => product.price, "quantity" => quantity }
+      session[:cart] << { "id" => product.id, "name" => product.name, "price" => product.price, "quantity" => quantity }
     end
 
     redirect_to cart_path
@@ -28,7 +28,7 @@ class CartsController < ApplicationController
 
   def remove_item
     product_id = params[:product_id].to_i
-    session[:cart].reject! { |product| product["id"] == product_id}
+    session[:cart].reject! { |product| product["id"] == product_id }
     redirect_to cart_path
   end
 

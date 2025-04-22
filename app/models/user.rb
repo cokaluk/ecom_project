@@ -23,5 +23,4 @@ class User < ApplicationRecord
   def email_required?
     !guest? && super
   end
-
 end

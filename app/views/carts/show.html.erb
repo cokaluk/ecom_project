@@ -1,17 +1,23 @@
 
 <% if session[:cart].any? %>
   <div class="row">
-    <% session[:cart].each do | product | %>
-      <div class="col-6 col-lg-4 my-4">
+    <% session[:cart].each do | item | %>
+      <% product = Product.find(item["id"]) %>
+      <div class="col-6 col-lg-4 my-4 ">
+        <% if product.image.attached? %>
+          <div class="col-12 d-flex justify-content-center">
+            <%= image_tag url_for(product.image.variant(resize_to_limit: [400, 400])), class: "img-fluid" %>
+          </div>
+        <% end %>
         <p><%= product["name"] %> </p>
         <p>Price: $<%= product["price"] %></p>
         <%= form_with url: update_item_cart_path(product_id: product["id"]), method: :patch, local: true do |f| %>
           <%= f.label :quantity, "Quantity" %>
-          <%= f.number_field :quantity, value: product["quantity"], min: 1, step: 1 %>
+          <%= f.number_field :quantity, value: item["quantity"], min: 1, step: 1 %>
           <%= f.submit "Update Quantity" %>
         <% end %>
           <%# <%= debug product %>
-        <%= button_to "Remove from Cart", remove_item_cart_path(product_id: product["id"]), method: :delete %>
+        <%= button_to "Remove from Cart", remove_item_cart_path(product_id: product["id"]), method: :delete, class: "my-4" %>
       </div>
     <% end %>
   </div>
@@ -20,11 +26,11 @@
   <%= form_with url: checkout_cart_path, method: :post do |f| %>
     <%= f.label :province_id, "Province" %>
     <%= f.collection_select :province_id, Province.all, :id, :name %>
-    <%= f.submit "Checkout" %>
+    <%= f.submit "Checkout", class: "btn btn-primary" %>
   <% end %>
 
 <% else %>
-  <%= button_to "Checkout", checkout_cart_path, method: :post %>
+  <%= button_to "Checkout", checkout_cart_path, method: :post, class: "btn btn-primary" %>
 <% end %> 
 
 <% else %>

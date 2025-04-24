@@ -1,15 +1,28 @@
-<h1>Order Confirmation</h1>
+<div class="card">
+  <div class="card-body">
+    <h1 class="card-title mb-4">Order Confirmation</h1>
 
-<p>Order ID: <%= @order.id %>
-<p>Sub Total: $<%= sprintf('%.2f', @order.sub_total / 100.0) %></p>
-<% @order.order_taxes.each do |tax| %>
-  <p><%= tax.tax_name %>: $<%= sprintf('%.2f', (tax.tax_rate * @order.sub_total).round / 100.0) %></p>
-<% end %>
-<p>Grand Total: $<%= sprintf('%.2f', @order.grand_total / 100.0) %></p>
+    <ul class="list-group mb-4">
+      <li class="list-group-item"><strong>Order ID:</strong> <%= @order.id %></li>
+      <li class="list-group-item"><strong>Sub Total:</strong> $<%= sprintf('%.2f', @order.sub_total / 100.0) %></li>
 
-<h2>Items Ordered</h2>
-  <% @order.order_items.each do |item| %>
-    <div>
-      <%= item.quantity %> x <%= item.product.name %> @ $<%= sprintf('%.2f', item.unit_price / 100.0) %>
+      <% @order.order_taxes.each do |tax| %>
+        <li class="list-group-item">
+          <strong><%= tax.tax_name %>:</strong> $<%= sprintf('%.2f', (tax.tax_rate * @order.sub_total).round / 100.0) %>
+        </li>
+      <% end %>
+
+      <li class="list-group-item"><strong>Grand Total:</strong> $<%= sprintf('%.2f', @order.grand_total / 100.0) %></li>
+    </ul>
+
+    <h2 class="h4 mb-3">Items Ordered</h2>
+    <div class="list-group">
+      <% @order.order_items.each do |item| %>
+        <div class="list-group-item d-flex justify-content-between">
+          <span><%= item.quantity %> x <%= item.product.name %></span>
+          <span class="text-muted">$<%= sprintf('%.2f', (item.unit_price / 100.0) * item.quantity ) %></span>
+        </div>
+      <% end %>
     </div>
-  <% end %>
+  </div>
+</div>

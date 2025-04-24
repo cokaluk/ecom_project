@@ -1,37 +1,40 @@
-
 <% if session[:cart].any? %>
   <div class="row">
     <% session[:cart].each do | item | %>
       <% product = Product.find(item["id"]) %>
       <div class="col-6 col-lg-4 my-4 ">
-        <% if product.image.attached? %>
-          <div class="col-12 d-flex justify-content-center">
-            <%= image_tag url_for(product.image.variant(resize_to_limit: [400, 400])), class: "img-fluid" %>
+        <div class="card h-100">
+          <% if product.image.attached? %>
+              <%= image_tag url_for(product.image.variant(resize_to_limit: [400, 400])), class: "card-img-top img-fluid p-2" %>
+          <% end %>
+
+          <div class="card-body">
+            <h5 class="card-title"><%= product["name"] %> </h5>
+            <p class="card-text">Price: $<%= '%.2f' % (product.price / 100.0) %></p>
+            <%= form_with url: update_item_cart_path(product_id: product["id"]), method: :patch, local: true do |f| %>
+              <div class="mb-2">
+                <%= f.label :quantity, "Quantity", class: "form-label" %>
+                <%= f.number_field :quantity, value: item["quantity"], min: 1, step: 1, class: "form-control" %>
+              </div>
+              <%= f.submit "Update Quantity" %>
+            <% end %>
+              <%# <%= debug product %>
+            <%= button_to "Remove from Cart", remove_item_cart_path(product_id: product["id"]), method: :delete, class: "my-4 btn btn-danger" %>
           </div>
-        <% end %>
-        <p><%= product["name"] %> </p>
-        <p>Price: $<%= product["price"] %></p>
-        <%= form_with url: update_item_cart_path(product_id: product["id"]), method: :patch, local: true do |f| %>
-          <%= f.label :quantity, "Quantity" %>
-          <%= f.number_field :quantity, value: item["quantity"], min: 1, step: 1 %>
-          <%= f.submit "Update Quantity" %>
-        <% end %>
-          <%# <%= debug product %>
-        <%= button_to "Remove from Cart", remove_item_cart_path(product_id: product["id"]), method: :delete, class: "my-4" %>
+        </div>
       </div>
     <% end %>
   </div>
 
   <% unless user_signed_in? %>
-  <%= form_with url: checkout_cart_path, method: :post do |f| %>
-    <%= f.label :province_id, "Province" %>
-    <%= f.collection_select :province_id, Province.all, :id, :name %>
-    <%= f.submit "Checkout", class: "btn btn-primary" %>
-  <% end %>
-
-<% else %>
-  <%= button_to "Checkout", checkout_cart_path, method: :post, class: "btn btn-primary" %>
-<% end %> 
+    <%= form_with url: checkout_cart_path, method: :post do |f| %>
+      <%= f.label :province_id, "Province" %>
+      <%= f.collection_select :province_id, Province.all, :id, :name %>
+      <%= f.submit "Checkout", class: "btn btn-primary" %>
+    <% end %>
+  <% else %>
+    <%= button_to "Checkout", checkout_cart_path, method: :post, class: "btn btn-primary" %>
+  <% end %> 
 
 <% else %>
   <p>Your cart is empty</p>

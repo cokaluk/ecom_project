@@ -1,34 +1,40 @@
-<%# <h2><%= @user.name %></h2>
-
 <% if @orders.any? %>
-    <h4>Order History</h4>
+    <h4 class="mb-4">Order History</h4>
     <div class="row">
       <% @orders.each do |order| %>
-        <div class="col-6 col-lg-4">
-          <h5>Order #<%= order.id %></h5>
+        <div class="col-6 col-lg-4 my-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Order #<%= order.id %></h5>
 
-          <h6>Products Purchased</h6>
-          <ul>
-            <% order.order_items.each do |item| %>
-              <li>
-                <%= item.product.name %> — 
-                Quantity: <%= item.quantity %>, 
-                Unit Price: <%= number_to_currency(item.product.price / 100.0) %>
-              </li>
-            <% end %>
-          </ul>
+              <h6 class="card-subtitle mb-2">Products Purchased</h6>
+              <ul class="list-unstyled mb-3">
+                <% order.order_items.each do |item| %>
+                  <li>
+                    <p><strong><%= item.product.name %></strong></p>
+                    <p>Quantity: <%= item.quantity %></p>
+                    <p>Unit Price: <%= number_to_currency(item.product.price / 100.0) %></p>
+                  </li>
+                  <hr>
+                <% end %>
+              </ul>
 
-          <p>Subtotal: <%= number_to_currency(order.sub_total / 100.0) %></p>
-          <% order.order_taxes.each do |tax| %>
-            <%= tax.tax_name %>:
-            <%= number_to_currency((order.sub_total * tax.tax_rate).to_f / 100.0) %>
-          <% end %>
-          <p>Grand Total: <%= number_to_currency(order.grand_total / 100.0) %></p>
+              <p>Subtotal: <%= number_to_currency(order.sub_total / 100.0) %></p>
+              <% order.order_taxes.each do |tax| %>
+                <p class="mb-0">
+                  <%= tax.tax_name %>:
+                  <%= number_to_currency((order.sub_total * tax.tax_rate).to_f / 100.0) %>
+                </p>
+              <% end %>
+              <p class="mt-2">Grand Total: <%= number_to_currency(order.grand_total / 100.0) %></p>
+            </div>
+          </div>
         </div>
       <% end %>
     </div>
-
 <% else %>
-    <p>You haven't placed any orders yet</p>
+    <p>You haven't placed any orders yet.</p>
 <% end %>
+
+
 

@@ -5,15 +5,19 @@
 <div class="row">
   <% @products.each do |product|%>
     <div class="col-6 col-lg-4 my-4">
-      <% if product.image.attached? %>
-        <div>
-          <%= image_tag url_for(product.image.variant(resize_to_limit: [400, 400])), class: "img-fluid", alt: "An image of #{product.name}" %>
+      <div class="card">
+        <% if product.image.attached? %>
+          <%= image_tag url_for(product.image.variant(resize_to_limit: [400, 400])), class: "card-img-top", alt: "An image of #{product.name}" %>
+        <% end %>
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">
+            <%= link_to product.name, product_path(product), class: "stretched-link text-decoration-none" %>
+          </h5>
+          <p class="card-text mb-1"><strong>Price:</strong> <%= number_to_currency(product.price / 100.0) %></p>
+          <p class="card-text mb-1"><strong>In Stock:</strong> <%= product.stock %></p>
+          <p class="card-text text-muted small"><%= product.description %></p>
         </div>
-      <% end %>
-      <h2><%= link_to product.name, product_path(product) %></h2>
-      <p>Price: <%= number_to_currency(product.price / 100.0) %></p>
-      <p>In Stock: <%= product.stock %></p>
-      <p>Description: <%= product.description %></p>
+      </div>
     </div>
   <% end %>
 </div>

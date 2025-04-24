@@ -1,19 +1,26 @@
 <div class="row justify-content-center">
   <% if @product.image.attached? %>
-    <div class="col-12 d-flex justify-content-center">
-      <%= image_tag url_for(@product.image.variant(resize_to_limit: [400, 400])), class: "img-fluid", alt: "An image of #{@product.name}" %>
+    <div class="col-12 text-center mb-4">
+      <%= image_tag url_for(@product.image.variant(resize_to_limit: [500, 500])), class: "img-fluid rounded shadow", alt: "An image of #{@product.name}" %>
     </div>
   <% end %>
-  <div class="col-4">
-    <h3><%= @product.name %></h3>
-    <p>Price: <%= number_to_currency(@product.price / 100.0) %></p>
-    <p>In Stock: <%= @product.stock %></p>
-    <p>Description: <%= @product.description %></p>
-    <p>Category: <%= link_to @product.category.name, category_path(@product.category) %></p>
-    <%= form_with url: add_item_cart_path(product_id: @product.id), method: :post, local: true do |f| %>
-      <%= f.label :quantity, "Quantity" %>
-      <%= f.number_field :quantity, value: 1, min: 1, step: 1 %>
-      <%= f.submit "Add to Cart" %>
-    <% end %>
+
+  <div class="col-md-8 col-lg-6">
+    <div class="card">
+      <div class="card-body">
+        <h2 class="card-title mb-3"><%= @product.name %></h2>
+        <p class="card-text"><strong>Price:</strong> <%= number_to_currency(@product.price / 100.0) %></p>
+        <p class="card-text"><strong>In Stock:</strong> <%= @product.stock %></p>
+        <p class="card-text"><%= @product.description %></p>
+        <hr>
+        <%= form_with url: add_item_cart_path(product_id: @product.id), method: :post, local: true do |f| %>
+          <div class="mb-3">
+            <%= f.label :quantity, "Quantity", class: "form-label" %>
+            <%= f.number_field :quantity, value: 1, min: 1, step: 1, class: "form-control w-25" %>
+          </div>
+          <%= f.submit "Add to Cart", class: "btn btn-primary" %>
+        <% end %>
+      </div>
+    </div>
   </div>
 </div>
